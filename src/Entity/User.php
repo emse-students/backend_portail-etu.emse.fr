@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -17,15 +18,16 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  * @UniqueEntity("login", message="Ce login existe déjà")
  * @ApiResource(
  *     collectionOperations={
- *         "get"={"access_control"="is_granted('ROLE_ADMIN')"},
- *         "post"={"access_control"="is_granted('ROLE_ADMIN')"}
+ *         "get"={"normalization_context"={"groups"={"user_light"}}},
+ *         "post"={"access_control"="is_granted('ROLE_R8_A1')"}
  *     },
  *     itemOperations={
- *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')"},
- *          "delete"={"access_control"="is_granted('ROLE_ADMIN')"},
- *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_ADMIN')"}
+ *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"},
+ *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
+ *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"}
  *     },
- *     normalizationContext={"groups"={"read"}}
+ *     normalizationContext={"groups"={"read"}},
+ *     attributes={"pagination_enabled"=false}
  * )
  */
 class User implements UserInterface
@@ -34,7 +36,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer", unique=true)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"read"})
+     * @Groups({"read", "get_full_asso", "user_light"})
      */
     private $id;
 
@@ -55,23 +57,15 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"read"})
+     * @Groups({"read", "get_full_asso", "user_light"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"read"})
+     * @Groups({"read", "get_full_asso", "user_light"})
      */
     private $lastname;
-
-
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read"})
-     */
-    private $role;
-
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
@@ -85,15 +79,33 @@ class User implements UserInterface
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Position", mappedBy="user", orphanRemoval=true)
+     */
+    private $positions;
 
-    public function __construct($login, $email, $lastname = "", $firstname = "", $role = null)
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read", "get_full_asso", "user_light"})
+     */
+    private $promo;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read", "get_full_asso", "user_light"})
+     */
+    private $type;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $balance = 0.;
+
+
+    public function __construct()
     {
-        $this->login = $login;
-        $this->email = $email;
-        $this->lastname = $lastname;
-        $this->firstname = $firstname;
-        $this->role = $role;
         $this->createdAt = new \DateTime();
+        $this->positions = new ArrayCollection();
     }
 
     /**
@@ -118,14 +130,17 @@ class User implements UserInterface
 
     public function getRoles()
     {
-
-        if ($this->role != Null)
+        $roles = array('ROLE_USER');
+        foreach ($this->positions as $numPos => $position)
         {
-            return array_unique(array_merge(['ROLE_USER'], [$this->role]));
-        }else{
-            return array('ROLE_USER');
-        }
+            $rights = $position->getRole()->getRights();
+            $assoId = $position->getAssociation()->getId();
+            foreach ($rights as $numRight => $right) {
+                $roles = array_unique(array_merge($roles, ['ROLE_R'.$right->getId().'_A'.$assoId]));
+            }
 
+        }
+        return $roles;
     }
 
     public function eraseCredentials()
@@ -195,22 +210,6 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param mixed $role
-     */
-    public function setRole($role): void
-    {
-        $this->role = $role;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getEmail()
     {
         return $this->email;
@@ -270,5 +269,72 @@ class User implements UserInterface
     public function setLogin($login): void
     {
         $this->login = $login;
+    }
+
+    /**
+     * @return Collection|Position[]
+     */
+    public function getPositions(): Collection
+    {
+        return $this->positions;
+    }
+
+    public function addPosition(Position $position): self
+    {
+        if (!$this->positions->contains($position)) {
+            $this->positions[] = $position;
+            $position->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePosition(Position $position): self
+    {
+        if ($this->positions->contains($position)) {
+            $this->positions->removeElement($position);
+            // set the owning side to null (unless already changed)
+            if ($position->getUser() === $this) {
+                $position->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getPromo(): ?int
+    {
+        return $this->promo;
+    }
+
+    public function setPromo(?int $promo): self
+    {
+        $this->promo = $promo;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getBalance(): ?float
+    {
+        return $this->balance;
+    }
+
+    public function setBalance(float $balance): self
+    {
+        $this->balance = $balance;
+
+        return $this;
     }
 }

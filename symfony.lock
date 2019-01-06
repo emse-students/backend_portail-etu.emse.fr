@@ -8,6 +8,9 @@
             "ref": "18727d8f229306860b46955f438e1897421da689"
         }
     },
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -80,6 +83,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "jms/metadata": {
+        "version": "1.7.0"
+    },
     "lcobucci/jwt": {
         "version": "3.2.5"
     },
@@ -128,6 +134,15 @@
     "psr/simple-cache": {
         "version": "1.0.1"
     },
+    "sensio/framework-extra-bundle": {
+        "version": "5.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        }
+    },
     "symfony/asset": {
         "version": "v4.2.0"
     },
@@ -164,6 +179,9 @@
     "symfony/event-dispatcher": {
         "version": "v4.2.0"
     },
+    "symfony/expression-language": {
+        "version": "v4.2.1"
+    },
     "symfony/filesystem": {
         "version": "v4.2.0"
     },
@@ -178,6 +196,9 @@
             "version": "1.0",
             "ref": "5f8a51c0fad684396f6b6c0fd770e043439cb632"
         }
+    },
+    "symfony/form": {
+        "version": "v4.2.1"
     },
     "symfony/framework-bundle": {
         "version": "4.2",
@@ -196,6 +217,9 @@
     },
     "symfony/inflector": {
         "version": "v4.2.0"
+    },
+    "symfony/intl": {
+        "version": "v4.2.1"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
@@ -218,8 +242,14 @@
             "ref": "18ebf5a940573a20de06f9c4060101eeb438cf3d"
         }
     },
+    "symfony/options-resolver": {
+        "version": "v4.2.1"
+    },
     "symfony/orm-pack": {
         "version": "v1.0.5"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.10.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.10.0"
@@ -263,6 +293,9 @@
     "symfony/serializer": {
         "version": "v4.2.0"
     },
+    "symfony/templating": {
+        "version": "v4.2.1"
+    },
     "symfony/twig-bridge": {
         "version": "v4.2.0"
     },
@@ -292,6 +325,15 @@
     },
     "twig/twig": {
         "version": "v2.5.0"
+    },
+    "vich/uploader-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
+        }
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"

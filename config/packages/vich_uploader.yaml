@@ -1,0 +1,10 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        img_object:
+            uri_prefix: /img
+            upload_destination: '%kernel.project_dir%/public/img'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'filename'}
