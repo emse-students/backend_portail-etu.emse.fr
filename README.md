@@ -21,7 +21,30 @@ $ composer install
 ``` bash
 $ openssl genrsa -out config/jwt/private.pem -aes256 4096
 $ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
-```
+```query {
+  users {
+    id
+    firstname
+    lastname
+    type
+    promo
+  }
+}
+
+mutation {
+  createUser (
+    firstname: "Théophane",
+    lastname: "Tassy",
+    type: "ICM",
+    promo: 2016
+  ) {
+    id
+    firstname
+    lastname
+    type
+    promo
+  }
+}
 
 In case first ```openssl``` command forces you to input password use following to get the private key decrypted
 ``` bash

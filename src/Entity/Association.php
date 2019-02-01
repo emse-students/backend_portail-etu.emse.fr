@@ -38,19 +38,19 @@ class Association
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"light", "get_full_asso"})
+     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"light", "get_full_asso"})
+     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"light", "get_full_asso"})
+     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
      */
     private $tag;
 
@@ -96,12 +96,19 @@ class Association
      */
     private $updatedAt;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="association", orphanRemoval=true)
+     * @Groups({"get_full_asso"})
+     */
+    private $events;
+
 
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->positions = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
 
     /**
@@ -252,6 +259,37 @@ class Association
     public function setTag(string $tag): self
     {
         $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setAssociation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getAssociation() === $this) {
+                $event->setAssociation(null);
+            }
+        }
 
         return $this;
     }
