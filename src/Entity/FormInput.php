@@ -18,30 +18,30 @@ class FormInput
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get"})
+     * @Groups({"event_get", "get_booking"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $type;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Option", mappedBy="formInput", orphanRemoval=true, cascade={"persist"})
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $options;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FormOutput", mappedBy="formInput", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\FormOutput", mappedBy="formInput", orphanRemoval=true, cascade={"persist", "remove"})
      * @Groups({"event_get"})
      */
     private $formOutputs;
@@ -51,6 +51,12 @@ class FormInput
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"event_post", "event_get", "get_booking"})
+     */
+    private $required;
 
     public function __construct()
     {
@@ -157,6 +163,18 @@ class FormInput
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
+        return $this;
+    }
+
+    public function getRequired(): ?bool
+    {
+        return $this->required;
+    }
+
+    public function setRequired(bool $required): self
+    {
+        $this->required = $required;
 
         return $this;
     }

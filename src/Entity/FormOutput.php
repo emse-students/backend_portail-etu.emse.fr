@@ -18,24 +18,35 @@ class FormOutput
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"event_get", "get_booking", "put_booking", "get_event_bookings"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"event_get", "post_booking", "get_booking", "put_booking", "get_event_bookings"})
      */
-    private $Answer;
+    private $answer;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Option", inversedBy="formOutputs")
+     * @Groups({"event_get", "post_booking", "get_booking", "put_booking", "get_event_bookings"})
      */
     private $options;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormInput", inversedBy="formOutputs")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"post_booking", "get_booking", "get_event_bookings"})
      */
     private $formInput;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Booking", inversedBy="formOutputs")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"post_booking"})
+     */
+    private $booking;
 
     public function __construct()
     {
@@ -49,12 +60,12 @@ class FormOutput
 
     public function getAnswer(): ?string
     {
-        return $this->Answer;
+        return $this->answer;
     }
 
-    public function setAnswer(?string $Answer): self
+    public function setAnswer(?string $answer): self
     {
-        $this->Answer = $Answer;
+        $this->answer = $answer;
 
         return $this;
     }
@@ -93,6 +104,18 @@ class FormOutput
     public function setFormInput(?FormInput $formInput): self
     {
         $this->formInput = $formInput;
+
+        return $this;
+    }
+
+    public function getBooking(): ?Booking
+    {
+        return $this->booking;
+    }
+
+    public function setBooking(?Booking $booking): self
+    {
+        $this->booking = $booking;
 
         return $this;
     }

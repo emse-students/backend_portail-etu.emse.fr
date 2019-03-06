@@ -19,6 +19,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={"event_get"}}},
+ *          "get_bookings"={
+ *              "method"="GET",
+ *              "path"="/events/{id}/bookings",
+ *              "normalization_context"={"groups"={"get_event_bookings"}}
+ *          },
  *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
  *          "put"={
  *              "normalization_context"={"groups"={"event_get"}},
@@ -34,100 +39,165 @@ class Event
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_get", "events_get", "get_full_asso", "user_info", "get_user", "get_booking"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso", "get_user"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso", "get_user"})
      */
     private $date;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso", "get_user"})
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
      */
     private $place;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\PaymentMeans", inversedBy="events")
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $paymentMeans;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
      */
     private $shotgunListLength;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $shotgunWaitingList;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
      */
     private $shotgunStartingDate;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso", "get_user"})
      */
     private $closingDate;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Association", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"event_post", "event_get", "events_get"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_user"})
      */
     private $association;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking"})
      */
     private $duration;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FormInput", mappedBy="event", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\FormInput", mappedBy="event", orphanRemoval=true, cascade={"persist", "remove"})
      * @Groups({"event_post", "event_get"})
      */
     private $formInputs;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_post", "event_get", "events_get", "get_full_asso"})
+     * @Groups({"event_post", "event_get", "events_get", "get_booking", "get_full_asso"})
      */
     private $status;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="event", orphanRemoval=true)
+     * @Groups({"event_post", "get_event_bookings"})
+     */
+    private $bookings;
+
+    /**
+     * @ORM\Column(name="event_open", type="boolean")
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
+     */
+    private $open;
+
+    /**
+     * @ORM\Column(name="created_at", type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     */
+    private $updatedAt;
 
     public function __construct()
     {
         $this->paymentMeans = new ArrayCollection();
         $this->formInputs = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function updateDate()
+    {
+        $this->setUpdatedAt(new \Datetime());
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $createdAt
+     */
+    public function setCreatedAt($createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     */
+    public function setUpdatedAt($updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
 
     public function getId(): ?int
     {
@@ -331,6 +401,49 @@ class Event
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getEvent() === $this) {
+                $booking->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOpen(): ?bool
+    {
+        return $this->open;
+    }
+
+    public function setOpen(bool $open): self
+    {
+        $this->open = $open;
 
         return $this;
     }

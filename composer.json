@@ -26,7 +26,8 @@
         "symfony/twig-bundle": "4.2.*",
         "symfony/validator": "4.2.*",
         "symfony/yaml": "4.2.*",
-        "vich/uploader-bundle": "^1.8"
+        "vich/uploader-bundle": "^1.8",
+      "ext-json": "*"
     },
     "config": {
         "preferred-install": {
@@ -72,5 +73,8 @@
             "allow-contrib": false,
             "require": "4.2.*"
         }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "4.2.*"
     }
 }

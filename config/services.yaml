@@ -25,3 +25,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+#    App\Normalizer\BookingDenormalizer:
+#        arguments:
+#            # Choose the denormalizer depending on your output.
+#            # For example, for JSON+LD it's "api_platform.jsonld.normalizer.item"
+##            - '@api_platform.json.normalizer.item'
+#            - '@App\Repository\BookingRepository'
+#        tags:
+#            # Priority is important but any value more than 8 should be ok
+#            - { name: serializer.normalizer, priority: 17 }

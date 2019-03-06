@@ -19,19 +19,19 @@ class Option
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings"})
      */
     private $id;
 
     /**
      * @ORM\Column(name="o_value", type="string", length=255)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking", "get_event_bookings"})
      */
     private $value;
 
     /**
      * @ORM\Column(type="float", nullable=true)
-     * @Groups({"event_post", "event_get"})
+     * @Groups({"event_post", "event_get", "get_booking", "get_event_bookings"})
      */
     private $price;
 

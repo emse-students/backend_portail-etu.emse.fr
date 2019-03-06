@@ -38,19 +38,19 @@ class Association
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
+     * @Groups({"light", "get_full_asso", "event_get", "get_booking", "events_get", "get_user"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
+     * @Groups({"light", "get_full_asso", "event_get", "get_booking", "events_get", "get_user"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"light", "get_full_asso", "event_get", "events_get"})
+     * @Groups({"light", "get_full_asso", "event_get", "get_booking", "events_get"})
      */
     private $tag;
 
@@ -101,6 +101,12 @@ class Association
      * @Groups({"get_full_asso"})
      */
     private $events;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"light", "get_full_asso"})
+     */
+    private $isList;
 
 
 
@@ -290,6 +296,18 @@ class Association
                 $event->setAssociation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsList(): ?bool
+    {
+        return $this->isList;
+    }
+
+    public function setIsList(?bool $isList): self
+    {
+        $this->isList = $isList;
 
         return $this;
     }

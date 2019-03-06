@@ -10,7 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+
 
 /**
  * @ORM\Table(name="users")
@@ -23,12 +24,19 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  *     itemOperations={
  *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"},
+ *          "get_info"={
+ *              "method"="GET",
+ *              "path"="/users/{id}/info",
+ *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')",
+ *              "normalization_context"={"groups"={"user_info"}}
+ *          },
  *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
  *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"}
  *     },
- *     normalizationContext={"groups"={"read"}},
+ *     normalizationContext={"groups"={"get_user"}},
  *     attributes={"pagination_enabled"=false}
  * )
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"balance","bookings","operations", "eventsBooked", "firstname", "lastname", "promo"}})
  */
 class User implements UserInterface
 {
@@ -36,7 +44,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer", unique=true)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"read", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings"})
      */
     private $id;
 
@@ -44,38 +52,38 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank
      * @Assert\Email()
-     * @Groups({"read"})
+     * @Groups({"get_user"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank
-     * @Groups({"read"})
+     * @Groups({"get_user"})
      */
     private $login;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"read", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"read", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
-     * @Groups({"read"})
+     * @Groups({"get_user"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     * @Groups({"read"})
+     * @Groups({"get_user"})
      */
     private $updatedAt;
 
@@ -86,26 +94,52 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"read", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "user_info"})
      */
     private $promo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "get_full_asso", "user_light"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups({"get_user", "user_light", "user_info"})
      */
     private $balance = 0.;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="user")
+     * @Groups({"get_user", "user_info"})
+     */
+    private $bookings;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Operation", mappedBy="user", orphanRemoval=true)
+     *  @Groups({"get_user", "user_info"})
+     */
+    private $operations;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"get_user", "user_light"})
+     */
+    private $contributeBDE;
+
+    /**
+     * @Groups({"user_info"})
+     */
+    private $eventsBooked;
 
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->positions = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
+        $this->operations = new ArrayCollection();
     }
 
     /**
@@ -293,7 +327,7 @@ class User implements UserInterface
     {
         if ($this->positions->contains($position)) {
             $this->positions->removeElement($position);
-            // set the owning side to null (unless already changed)
+            // set the owning side to null (unless alget_usery changed)
             if ($position->getUser() === $this) {
                 $position->setUser(null);
             }
@@ -337,4 +371,92 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless alget_usery changed)
+            if ($booking->getUser() === $this) {
+                $booking->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Operation[]
+     */
+    public function getOperations(): Collection
+    {
+        return $this->operations;
+    }
+
+    public function addOperation(Operation $operation): self
+    {
+        if (!$this->operations->contains($operation)) {
+            $this->operations[] = $operation;
+            $operation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOperation(Operation $operation): self
+    {
+        if ($this->operations->contains($operation)) {
+            $this->operations->removeElement($operation);
+            // set the owning side to null (unless alget_usery changed)
+            if ($operation->getUser() === $this) {
+                $operation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getContributeBDE(): ?bool
+    {
+        return $this->contributeBDE;
+    }
+
+    public function setContributeBDE(bool $contributeBDE): self
+    {
+        $this->contributeBDE = $contributeBDE;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEventsBooked()
+    {
+        $eventsBooked = [];
+        $bookings = $this->getBookings();
+        foreach ($bookings as $numBooking => $booking) {
+            $eventsBooked = array_unique(array_merge($eventsBooked, [$booking->getEvent()->getId()]));
+        }
+        return $eventsBooked;
+    }
+
 }

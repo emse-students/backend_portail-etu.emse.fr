@@ -71,6 +71,7 @@ class LoginController extends AbstractController
                     $authenticated_user["id"] = $user->getId();
                     $authenticated_user["roles"] = $user->getRoles();
                     $authenticated_user["type"] = $user->getType();
+                    $authenticated_user["contributeBDE"] = $user->getContributeBDE();
                     $authenticated_user["token"] = [];
                     $authenticated_user["token"]["bearer"] = $jwt;
                     $authenticated_user["token"]["exp"] = time() + 86400;

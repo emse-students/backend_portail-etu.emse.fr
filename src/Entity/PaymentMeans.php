@@ -18,13 +18,13 @@ class PaymentMeans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_get"})
+     * @Groups({"event_get", "get_booking"})
      */
     private $name;
 
@@ -33,9 +33,15 @@ class PaymentMeans
      */
     private $events;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="paymentMeans")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -78,6 +84,37 @@ class PaymentMeans
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             $event->removePaymentMean($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setPaymentMeans($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getPaymentMeans() === $this) {
+                $booking->setPaymentMeans(null);
+            }
         }
 
         return $this;
