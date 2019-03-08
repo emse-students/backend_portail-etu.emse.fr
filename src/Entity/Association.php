@@ -17,15 +17,15 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "get"={"normalization_context"={"groups"={"light"}}},
  *         "post"={
  *              "normalization_context"={"groups"={"light"}},
- *              "access_control"="is_granted('ROLE_R8_A1')"
+ *              "access_control"="is_granted('ROLE_R0_A1')"
  *          }
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={"get_full_asso"}}},
- *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"},
  *          "put"={
  *              "normalization_context"={"groups"={"get_full_asso"}},
- *              "access_control"="is_granted('ROLE_R8_A1') or ('ROLE_R1_A'~object.getId() in roles)"
+ *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R1_A'~object.getId() in roles)"
  *          },
  *     },
  *     attributes={"pagination_enabled"=false}

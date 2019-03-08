@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "path"="/events/{id}/bookings",
  *              "normalization_context"={"groups"={"get_event_bookings"}}
  *          },
- *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"},
  *          "put"={
  *              "normalization_context"={"groups"={"event_get"}},
  *              "denormalization_context"={"groups"={"event_post"}}

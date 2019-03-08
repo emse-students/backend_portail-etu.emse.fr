@@ -12,12 +12,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "get"={"normalization_context"={"groups"={"get_full_asso"}}},
  *         "post"={
  *              "normalization_context"={"groups"={"get_full_asso"}},
- *              "access_control"="is_granted('ROLE_R8_A1') or ('ROLE_R2_A'~object.getAssociation().getId() in roles)"
+ *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R2_A'~object.getAssociation().getId() in roles)"
  *          }
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={"get_full_asso"}}},
- *          "delete"={"access_control"="is_granted('ROLE_R8_A1') or ('ROLE_R2_A'~object.getAssociation().getId() in roles)"}
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R2_A'~object.getAssociation().getId() in roles)"}
  *     },
  *     attributes={"pagination_enabled"=false}
  * )

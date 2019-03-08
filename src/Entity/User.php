@@ -20,18 +20,18 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * @ApiResource(
  *     collectionOperations={
  *         "get"={"normalization_context"={"groups"={"user_light"}}},
- *         "post"={"access_control"="is_granted('ROLE_R8_A1')"}
+ *         "post"={"access_control"="is_granted('ROLE_R0_A1')"}
  *     },
  *     itemOperations={
- *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"},
+ *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')"},
  *          "get_info"={
  *              "method"="GET",
  *              "path"="/users/{id}/info",
- *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')",
+ *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')",
  *              "normalization_context"={"groups"={"user_info"}}
  *          },
- *          "delete"={"access_control"="is_granted('ROLE_R8_A1')"},
- *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R8_A1')"}
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"},
+ *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')"}
  *     },
  *     normalizationContext={"groups"={"get_user"}},
  *     attributes={"pagination_enabled"=false}

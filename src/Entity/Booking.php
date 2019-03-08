@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+//*              "access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1')",
 
 /**
  * @ApiResource(
@@ -20,9 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={"get_booking"}}},
- *          "delete"={"access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R8_A1')"},
+ *          "delete"={"access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1')"},
  *          "put"={
- *              "access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R8_A1')",
  *              "normalization_context"={"groups"={"get_booking"}},
  *              "denormalization_context"={"groups"={"put_booking"}}
  *          },
