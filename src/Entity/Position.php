@@ -12,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "get"={"normalization_context"={"groups"={"get_full_asso"}}},
  *         "post"={
  *              "normalization_context"={"groups"={"get_full_asso"}},
+ *              "denormalization_context"={"groups"={"position_post"}},
  *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R2_A'~object.getAssociation().getId() in roles)"
  *          }
  *     },
@@ -36,20 +37,21 @@ class Position
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="positions")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "position_post"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Association", inversedBy="positions")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"position_post"})
      */
     private $association;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="positions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Role", inversedBy="positions", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "position_post"})
      */
     private $role;
 

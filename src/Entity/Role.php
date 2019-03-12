@@ -42,19 +42,19 @@ class Role
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"get_role", "get_full_asso"})
+     * @Groups({"get_role", "get_full_asso", "position_post"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"get_role", "get_full_asso"})
+     * @Groups({"get_role", "get_full_asso", "position_post"})
      */
     private $hierarchy;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\UserRight")
-     * @Groups({"get_role", "get_full_asso"})
+     * @Groups({"get_role", "get_full_asso", "position_post"})
      */
     private $rights;
 
