@@ -44,7 +44,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer", unique=true)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "event_get"})
      */
     private $id;
 
@@ -65,13 +65,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get"})
      */
     private $lastname;
 

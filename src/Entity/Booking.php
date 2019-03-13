@@ -35,7 +35,7 @@ class Booking
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get_booking", "get_bookings", "user_info", "get_user", "put_booking", "get_event_bookings"})
+     * @Groups({"get_booking", "get_bookings", "user_info", "get_user", "put_booking", "get_event_bookings", "event_get"})
      */
     private $id;
 
@@ -53,7 +53,7 @@ class Booking
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="bookings")
-     * @Groups({"get_booking", "get_bookings", "post_booking", "put_booking", "get_event_bookings"})
+     * @Groups({"get_booking", "get_bookings", "post_booking", "put_booking", "get_event_bookings", "event_get"})
      */
     private $user;
 
@@ -66,7 +66,7 @@ class Booking
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"post_booking", "get_booking", "get_bookings", "put_booking", "get_event_bookings"})
+     * @Groups({"post_booking", "get_booking", "get_bookings", "put_booking", "get_event_bookings", "event_get"})
      */
     private $userName;
 

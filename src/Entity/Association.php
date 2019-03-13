@@ -68,7 +68,7 @@ class Association
 
     /**
      * @var ImgObject|null
-     * @ORM\ManyToOne(targetEntity="App\Entity\ImgObject")
+     * @ORM\OneToOne(targetEntity="App\Entity\ImgObject", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      * @Groups({"get_full_asso"})
      */

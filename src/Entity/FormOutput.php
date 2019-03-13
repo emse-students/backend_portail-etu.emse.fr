@@ -44,7 +44,7 @@ class FormOutput
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Booking", inversedBy="formOutputs")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"post_booking"})
+     * @Groups({"post_booking", "event_get"})
      */
     private $booking;
 
