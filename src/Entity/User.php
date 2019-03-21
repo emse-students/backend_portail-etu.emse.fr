@@ -94,7 +94,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "user_info"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "user_info", "get_event_bookings"})
      */
     private $promo;
 
