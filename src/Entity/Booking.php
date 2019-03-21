@@ -84,6 +84,7 @@ class Booking
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
+     *  @Groups({"get_booking", "get_event_bookings"})
      */
     private $createdAt;
 
@@ -91,6 +92,12 @@ class Booking
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
     private $updatedAt;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"get_booking", "post_booking", "put_booking", "get_event_bookings"})
+     */
+    private $checked;
 
     public function __construct()
     {
@@ -249,6 +256,18 @@ class Booking
                 $formOutput->setBooking(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getChecked(): ?bool
+    {
+        return $this->checked;
+    }
+
+    public function setChecked(?bool $checked): self
+    {
+        $this->checked = $checked;
 
         return $this;
     }

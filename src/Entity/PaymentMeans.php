@@ -24,7 +24,7 @@ class PaymentMeans
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_get", "get_booking"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings"})
      */
     private $name;
 

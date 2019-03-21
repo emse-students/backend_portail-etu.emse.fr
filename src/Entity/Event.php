@@ -150,6 +150,11 @@ class Event
      */
     private $updatedAt;
 
+    /**
+     * @Groups({"event_get", "get_booking", "events_get", "get_full_asso"})
+     */
+    private $countBookings;
+
     public function __construct()
     {
         $this->paymentMeans = new ArrayCollection();
@@ -181,6 +186,15 @@ class Event
     {
         $this->createdAt = $createdAt;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCountBookings()
+    {
+        return count($this->getBookings());
+    }
+
 
     /**
      * @return mixed
