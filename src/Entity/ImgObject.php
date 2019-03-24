@@ -33,7 +33,7 @@ class ImgObject
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "event_get", "get_booking", "events_get"})
      */
     private $id;
 
@@ -47,7 +47,7 @@ class ImgObject
     /**
      * @var string|null
      * @ORM\Column(nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "event_get", "get_booking", "events_get"})
      */
     public $filename;
 

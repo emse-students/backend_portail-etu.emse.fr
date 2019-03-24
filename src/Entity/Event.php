@@ -155,6 +155,12 @@ class Event
      */
     private $countBookings;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ImgObject", cascade={"persist", "remove"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
+     */
+    private $img;
+
     public function __construct()
     {
         $this->paymentMeans = new ArrayCollection();
@@ -458,6 +464,18 @@ class Event
     public function setOpen(bool $open): self
     {
         $this->open = $open;
+
+        return $this;
+    }
+
+    public function getImg(): ?ImgObject
+    {
+        return $this->img;
+    }
+
+    public function setImg(?ImgObject $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }
