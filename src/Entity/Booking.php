@@ -20,10 +20,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     },
  *     itemOperations={
  *          "get"={"normalization_context"={"groups"={"get_booking"}}},
- *          "delete"={"access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1')"},
+ *          "delete"={"access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getEvent().getAssociation().getId() in roles)"},
  *          "put"={
  *              "normalization_context"={"groups"={"get_booking"}},
- *              "denormalization_context"={"groups"={"put_booking"}}
+ *              "denormalization_context"={"groups"={"put_booking"}},
+ *              "access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getEvent().getAssociation().getId() in roles)"
  *          },
  *     }
  * )

@@ -14,11 +14,15 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  * @ApiResource(
  *     collectionOperations={
  *         "get",
- *         "post"
+ *         "post"={
+ *               "access_control"="is_granted('ROLE_R0_A1')"
+ *          }
  *     },
  *     itemOperations={
  *          "get",
- *          "delete"
+ *          "delete"={
+ *               "access_control"="is_granted('ROLE_R0_A1')"
+ *          }
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")

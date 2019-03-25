@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "get"={"normalization_context"={"groups"={"events_get"}}},
  *         "post"={
  *              "normalization_context"={"groups"={"event_get"}},
- *              "denormalization_context"={"groups"={"event_post"}}
+ *              "denormalization_context"={"groups"={"event_post"}},
+ *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getAssociation().getId() in roles)"
  *          }
  *     },
  *     itemOperations={
@@ -24,10 +25,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "path"="/events/{id}/bookings",
  *              "normalization_context"={"groups"={"get_event_bookings"}}
  *          },
- *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"},
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getAssociation().getId() in roles)"},
  *          "put"={
  *              "normalization_context"={"groups"={"event_get"}},
- *              "denormalization_context"={"groups"={"event_post"}}
+ *              "denormalization_context"={"groups"={"event_post"}},
+ *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getAssociation().getId() in roles)"
  *          },
  *     }
  * )
