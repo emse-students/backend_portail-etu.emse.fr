@@ -163,6 +163,12 @@ class Event
      */
     private $img;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
+     */
+    private $collectLink;
+
     public function __construct()
     {
         $this->paymentMeans = new ArrayCollection();
@@ -478,6 +484,18 @@ class Event
     public function setImg(?ImgObject $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    public function getCollectLink(): ?string
+    {
+        return $this->collectLink;
+    }
+
+    public function setCollectLink(?string $collectLink): self
+    {
+        $this->collectLink = $collectLink;
 
         return $this;
     }
