@@ -73,7 +73,7 @@ class Booking
     private $userName;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="booking", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Operation", mappedBy="booking", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Groups({"get_booking", "post_booking", "put_booking"})
      */
     private $operation;
@@ -224,7 +224,7 @@ class Booking
 
         // set (or unset) the owning side of the relation if necessary
         $newBooking = $operation === null ? null : $this;
-        if ($newBooking !== $operation->getBooking()) {
+        if (!is_null($operation) and $newBooking !== $operation->getBooking()) {
             $operation->setBooking($newBooking);
         }
 

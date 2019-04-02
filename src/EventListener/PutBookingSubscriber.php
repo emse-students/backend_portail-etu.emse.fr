@@ -45,7 +45,7 @@ final class PutBookingSubscriber implements EventSubscriberInterface
         }
 //        $this->logger->info('hola');
         //$this->logger->info(var_export($request->attributes));
-//        $this->logger->info($request->getContent());
+        $this->logger->info($request->getContent());
         $data = json_decode($request->getContent(), true);
         if (isset($data['operation']) and !array_key_exists('id',$data['operation'])) {
             $oldBooking = $this->repository->find($data['id']);
@@ -69,6 +69,14 @@ final class PutBookingSubscriber implements EventSubscriberInterface
                 $user = $this->userRepository->find($userId);
                 $user->setBalance($user->getBalance()+$data['operation']['amount']);
                 $em->flush();
+            }
+        } elseif (!isset($data['operation'])) {
+//            $this->logger->info('data operation= '.$data['operation']);
+            $oldBooking = $this->repository->find($data['id']);
+            $oldOperation = $oldBooking->getOperation();
+            $em = $this->doctrine->getManager();
+            if (!is_null($oldOperation)) {
+                $em->remove($oldOperation);
             }
         }
         return;
