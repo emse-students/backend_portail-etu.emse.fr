@@ -10,6 +10,7 @@
         "doctrine/common": "^2.10",
         "doctrine/doctrine-bundle": "^1.10",
         "doctrine/orm": "^2.6",
+        "guzzlehttp/guzzle": "^6.3",
         "jasig/phpcas": "^1.3",
         "lexik/jwt-authentication-bundle": "^2.6",
         "nelmio/cors-bundle": "^1.5",

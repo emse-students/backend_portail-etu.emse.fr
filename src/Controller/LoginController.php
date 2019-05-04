@@ -68,6 +68,7 @@ class LoginController extends AbstractController
                     $authenticated_user["firstname"] = $user->getFirstname();
                     $authenticated_user["lastname"] = $user->getLastname();
                     $authenticated_user["email"] = $user->getEmail();
+                    $authenticated_user["login"] = $user->getLogin();
                     $authenticated_user["id"] = $user->getId();
                     $authenticated_user["roles"] = $user->getRoles();
                     $authenticated_user["type"] = $user->getType();

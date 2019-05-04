@@ -19,8 +19,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  * @UniqueEntity("login", message="Ce login existe déjà")
  * @ApiResource(
  *     collectionOperations={
- *         "get"={"normalization_context"={"groups"={"user_light"}}},
- *         "post"={"access_control"="is_granted('ROLE_R0_A1')"}
+ *         "get"={"normalization_context"={"groups"={"user_light"}}}
  *     },
  *     itemOperations={
  *          "get"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')"},
@@ -30,13 +29,12 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')",
  *              "normalization_context"={"groups"={"user_info"}}
  *          },
- *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"},
- *          "put"={"access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')"}
+ *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"}
  *     },
  *     normalizationContext={"groups"={"get_user"}},
  *     attributes={"pagination_enabled"=false}
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"balance","bookings","operations", "eventsBooked", "firstname", "lastname", "promo"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"balance","bookings","operations", "eventsBooked", "firstname", "lastname", "promo", "contributeBDE"}})
  */
 class User implements UserInterface
 {
@@ -59,7 +57,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      * @Assert\NotBlank
-     * @Groups({"get_user"})
+     * @Groups({"get_user", "user_light"})
      */
     private $login;
 
@@ -124,7 +122,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get_user", "user_light"})
+     * @Groups({"get_user", "user_light", "user_info"})
      */
     private $contributeBDE;
 

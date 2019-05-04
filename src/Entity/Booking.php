@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use GuzzleHttp\Client;
 use Symfony\Component\Serializer\Annotation\Groups;
 //*              "access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1')",
 
@@ -100,6 +101,17 @@ class Booking
      * @Groups({"get_booking", "post_booking", "put_booking", "get_event_bookings"})
      */
     private $checked;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $cercleOperationId;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     * @Groups({"post_booking", "put_booking", "get_booking"})
+     */
+    private $cercleOperationAmount;
 
     public function __construct()
     {
@@ -270,6 +282,30 @@ class Booking
     public function setChecked(?bool $checked): self
     {
         $this->checked = $checked;
+
+        return $this;
+    }
+
+    public function getCercleOperationId(): ?int
+    {
+        return $this->cercleOperationId;
+    }
+
+    public function setCercleOperationId(?int $cercleOperationId): self
+    {
+        $this->cercleOperationId = $cercleOperationId;
+
+        return $this;
+    }
+
+    public function getCercleOperationAmount(): ?float
+    {
+        return $this->cercleOperationAmount;
+    }
+
+    public function setCercleOperationAmount(?float $cercleOperationAmount): self
+    {
+        $this->cercleOperationAmount = $cercleOperationAmount;
 
         return $this;
     }

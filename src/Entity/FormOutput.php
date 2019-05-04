@@ -44,7 +44,7 @@ class FormOutput
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\FormInput", inversedBy="formOutputs")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"post_booking", "get_booking", "get_event_bookings"})
+     * @Groups({"post_booking", "put_booking", "get_booking", "get_event_bookings"})
      */
     private $formInput;
 
