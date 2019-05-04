@@ -34,7 +34,7 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *     normalizationContext={"groups"={"get_user"}},
  *     attributes={"pagination_enabled"=false}
  * )
- * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"balance","bookings","operations", "eventsBooked", "firstname", "lastname", "promo", "contributeBDE"}})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false, "whitelist": {"balance","bookings","operations", "eventsBooked", "firstname", "lastname", "promo", "contributeBDE", "type"}})
  */
 class User implements UserInterface
 {
@@ -98,7 +98,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "user_info", "get_full_asso", "user_light"})
      */
     private $type;
 
