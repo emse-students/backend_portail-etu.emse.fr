@@ -67,6 +67,24 @@ class Association
     private $color;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_full_asso"})
+     */
+    private $contrastColor;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_full_asso"})
+     */
+    private $color2;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"get_full_asso"})
+     */
+    private $contrastColor2;
+
+    /**
      * @var ImgObject|null
      * @ORM\OneToOne(targetEntity="App\Entity\ImgObject", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
@@ -107,8 +125,6 @@ class Association
      * @Groups({"light", "get_full_asso"})
      */
     private $isList;
-
-
 
     public function __construct()
     {
@@ -308,6 +324,42 @@ class Association
     public function setIsList(?bool $isList): self
     {
         $this->isList = $isList;
+
+        return $this;
+    }
+
+    public function getColor2(): ?string
+    {
+        return $this->color2;
+    }
+
+    public function setColor2(?string $color2): self
+    {
+        $this->color2 = $color2;
+
+        return $this;
+    }
+
+    public function getContrastColor(): ?string
+    {
+        return $this->contrastColor;
+    }
+
+    public function setContrastColor(?string $contrastColor): self
+    {
+        $this->contrastColor = $contrastColor;
+
+        return $this;
+    }
+
+    public function getContrastColor2(): ?string
+    {
+        return $this->contrastColor2;
+    }
+
+    public function setContrastColor2(?string $contrastColor2): self
+    {
+        $this->contrastColor2 = $contrastColor2;
 
         return $this;
     }
