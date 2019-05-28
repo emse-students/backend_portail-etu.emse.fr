@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Datetime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Filters\GetEventsDateFilter;
+use App\Filters\GetEventsStatusFilter;
 
 /**
  * @ApiResource(
@@ -31,8 +36,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "denormalization_context"={"groups"={"event_post"}},
  *              "access_control"="is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getAssociation().getId() in roles)"
  *          },
- *     }
+ *     },
+ *     attributes={"pagination_enabled"=false}
  * )
+ * @ApiFilter(GetEventsDateFilter::class)
+ * @ApiFilter(GetEventsStatusFilter::class)
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
 class Event
@@ -77,7 +85,7 @@ class Event
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\PaymentMeans", inversedBy="events")
-     * @Groups({"event_post", "event_get", "get_booking"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get"})
      */
     private $paymentMeans;
 
@@ -89,7 +97,7 @@ class Event
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @Groups({"event_post", "event_get", "get_booking"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get"})
      */
     private $shotgunWaitingList;
 
@@ -114,7 +122,7 @@ class Event
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"event_post", "event_get", "get_booking"})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get"})
      */
     private $duration;
 
@@ -174,7 +182,7 @@ class Event
         $this->paymentMeans = new ArrayCollection();
         $this->formInputs = new ArrayCollection();
         $this->bookings = new ArrayCollection();
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
     }
 
     /**
@@ -182,7 +190,7 @@ class Event
      */
     public function updateDate()
     {
-        $this->setUpdatedAt(new \Datetime());
+        $this->setUpdatedAt(new Datetime());
     }
 
     /**
@@ -256,12 +264,12 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -342,24 +350,24 @@ class Event
         return $this;
     }
 
-    public function getShotgunStartingDate(): ?\DateTimeInterface
+    public function getShotgunStartingDate(): ?DateTimeInterface
     {
         return $this->shotgunStartingDate;
     }
 
-    public function setShotgunStartingDate(?\DateTimeInterface $shotgunStartingDate): self
+    public function setShotgunStartingDate(?DateTimeInterface $shotgunStartingDate): self
     {
         $this->shotgunStartingDate = $shotgunStartingDate;
 
         return $this;
     }
 
-    public function getClosingDate(): ?\DateTimeInterface
+    public function getClosingDate(): ?DateTimeInterface
     {
         return $this->closingDate;
     }
 
-    public function setClosingDate(?\DateTimeInterface $closingDate): self
+    public function setClosingDate(?DateTimeInterface $closingDate): self
     {
         $this->closingDate = $closingDate;
 

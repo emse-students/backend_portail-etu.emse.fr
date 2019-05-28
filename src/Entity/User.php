@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use Datetime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -134,7 +135,7 @@ class User implements UserInterface
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->positions = new ArrayCollection();
         $this->bookings = new ArrayCollection();
         $this->operations = new ArrayCollection();
@@ -145,7 +146,7 @@ class User implements UserInterface
      */
     public function updateDate()
     {
-        $this->setUpdatedAt(new \Datetime());
+        $this->setUpdatedAt(new Datetime());
     }
 
 

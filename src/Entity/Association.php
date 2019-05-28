@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
+use Datetime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,25 +64,25 @@ class Association
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "events_get"})
      */
     private $color;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "events_get"})
      */
     private $contrastColor;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "events_get"})
      */
     private $color2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "events_get"})
      */
     private $contrastColor2;
 
@@ -88,7 +90,7 @@ class Association
      * @var ImgObject|null
      * @ORM\OneToOne(targetEntity="App\Entity\ImgObject", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
-     * @Groups({"get_full_asso"})
+     * @Groups({"get_full_asso", "events_get"})
      */
     public $logo;
 
@@ -128,7 +130,7 @@ class Association
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->positions = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
@@ -138,7 +140,7 @@ class Association
      */
     public function updateDate()
     {
-        $this->setUpdatedAt(new \Datetime());
+        $this->setUpdatedAt(new Datetime());
     }
 
     /**
@@ -214,12 +216,12 @@ class Association
         return $this;
     }
 
-    public function getLastActionDate(): ?\DateTimeInterface
+    public function getLastActionDate(): ?DateTimeInterface
     {
         return $this->last_action_date;
     }
 
-    public function setLastActionDate(?\DateTimeInterface $last_action_date): self
+    public function setLastActionDate(?DateTimeInterface $last_action_date): self
     {
         $this->last_action_date = $last_action_date;
 
