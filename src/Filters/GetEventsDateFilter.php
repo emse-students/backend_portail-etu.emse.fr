@@ -25,7 +25,7 @@ final class GetEventsDateFilter extends AbstractContextAwareFilter
         if ( $property != 'time') {
             return;
         }
-        date_default_timezone_set('Europe/Paris');
+
         if ($value == 'now') {
             $curentDate = new \DateTime();
             $lastMonday = new \DateTime();
@@ -47,13 +47,9 @@ final class GetEventsDateFilter extends AbstractContextAwareFilter
         $nextMonday->modify("next monday");
         $nextMonday->modify("next monday");
         $nextMonday->modify("next monday");
-
-
-
-
-        $this->logger->info('asked date : '. $curentDate->format('j/n/Y G:i'));
-        $this->logger->info('lastMonday date : '. $lastMonday->format('j/n/Y G:i'));
-        $this->logger->info('thirdNextMonday date : '. $nextMonday->format('j/n/Y G:i'));
+        $nextMonday->modify("next monday");
+//        $this->logger->info('lastMonday date : '. $lastMonday->format('j/n/Y G:i'));
+//        $this->logger->info('thirdNextMonday date : '. $nextMonday->format('j/n/Y G:i'));
 
         $queryBuilder
             ->andWhere('(o.date >= ?1 and o.date < ?2) OR (o.shotgunStartingDate >= ?1 and o.shotgunStartingDate < ?2)')
