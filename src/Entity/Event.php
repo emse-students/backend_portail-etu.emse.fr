@@ -177,6 +177,12 @@ class Event
      */
     private $collectLink;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : true})
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso", "get_user"})
+     */
+    private $isBookable;
+
     public function __construct()
     {
         $this->paymentMeans = new ArrayCollection();
@@ -504,6 +510,18 @@ class Event
     public function setCollectLink(?string $collectLink): self
     {
         $this->collectLink = $collectLink;
+
+        return $this;
+    }
+
+    public function getIsBookable(): ?bool
+    {
+        return $this->isBookable;
+    }
+
+    public function setIsBookable(bool $isBookable): self
+    {
+        $this->isBookable = $isBookable;
 
         return $this;
     }
