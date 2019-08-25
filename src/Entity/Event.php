@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use App\Filters\GetEventsDateFilter;
+use App\Filters\GetDateFilter;
 use App\Filters\GetEventsStatusFilter;
 
 /**
@@ -39,7 +39,7 @@ use App\Filters\GetEventsStatusFilter;
  *     },
  *     attributes={"pagination_enabled"=false}
  * )
- * @ApiFilter(GetEventsDateFilter::class)
+ * @ApiFilter(GetDateFilter::class)
  * @ApiFilter(GetEventsStatusFilter::class)
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */

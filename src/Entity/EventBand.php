@@ -5,8 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use App\Filters\GetEventBandsDateFilter;
+use App\Filters\GetDateFilter;
 
 /**
  * @ApiResource(
@@ -21,7 +22,7 @@ use App\Filters\GetEventBandsDateFilter;
  *     },
  *     attributes={"pagination_enabled"=false}
  * )
- * @ApiFilter(GetEventBandsDateFilter::class)
+ * @ApiFilter(GetDateFilter::class)
  * @ORM\Entity(repositoryClass="App\Repository\EventBandRepository")
  */
 class EventBand
@@ -131,24 +132,24 @@ class EventBand
         return $this;
     }
 
-    public function getStartingDate(): ?\DateTimeInterface
+    public function getStartingDate(): ?DateTimeInterface
     {
         return $this->startingDate;
     }
 
-    public function setStartingDate(\DateTimeInterface $startingDate): self
+    public function setStartingDate(DateTimeInterface $startingDate): self
     {
         $this->startingDate = $startingDate;
 
         return $this;
     }
 
-    public function getEndingDate(): ?\DateTimeInterface
+    public function getEndingDate(): ?DateTimeInterface
     {
         return $this->endingDate;
     }
 
-    public function setEndingDate(\DateTimeInterface $endingDate): self
+    public function setEndingDate(DateTimeInterface $endingDate): self
     {
         $this->endingDate = $endingDate;
 
