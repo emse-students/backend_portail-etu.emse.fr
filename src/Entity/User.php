@@ -4,7 +4,6 @@ use Datetime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,6 +28,10 @@ use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
  *              "path"="/users/{id}/info",
  *              "access_control"="(is_granted('ROLE_USER') and object == user) or is_granted('ROLE_R0_A1')",
  *              "normalization_context"={"groups"={"user_info"}}
+ *          },
+ *          "put"={
+ *              "access_control"="is_granted('ROLE_R0_A1')",
+ *              "denormalization_context"={"groups"={"put_user"}}
  *          },
  *          "delete"={"access_control"="is_granted('ROLE_R0_A1')"}
  *     },
@@ -64,13 +67,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user"})
      */
     private $lastname;
 
@@ -93,13 +96,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "user_info", "get_event_bookings"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "user_info", "get_event_bookings", "put_user"})
      */
     private $promo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_user", "user_info", "get_full_asso", "user_light"})
+     * @Groups({"get_user", "user_info", "get_full_asso", "user_light", "put_user"})
      */
     private $type;
 
@@ -123,7 +126,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="boolean")
-     * @Groups({"get_user", "user_light", "user_info"})
+     * @Groups({"get_user", "user_light", "user_info", "put_user"})
      */
     private $contributeBDE;
 
