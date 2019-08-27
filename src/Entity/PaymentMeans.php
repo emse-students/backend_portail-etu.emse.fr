@@ -9,7 +9,24 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get",
+ *         "post"={
+ *               "access_control"="is_granted('ROLE_R0_A1')"
+ *          }
+ *     },
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *               "access_control"="is_granted('ROLE_R0_A1')"
+ *          },
+ *          "delete"={
+ *               "access_control"="is_granted('ROLE_R0_A1')"
+ *          }
+ *     },
+ *     normalizationContext={"groups"={"payment_means"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\PaymentMeansRepository")
  */
 class PaymentMeans
@@ -18,13 +35,13 @@ class PaymentMeans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means"})
      */
     private $name;
 
