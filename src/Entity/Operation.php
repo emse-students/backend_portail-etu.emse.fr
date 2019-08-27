@@ -23,7 +23,8 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  *          "delete"={
  *               "access_control"="is_granted('ROLE_R0_A1')"
  *          }
- *     }
+ *     },
+ *     normalizationContext={"groups"={"get_operations"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
  * @HasLifecycleCallbacks
@@ -34,14 +35,14 @@ class Operation
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"get_booking", "user_info"})
+     * @Groups({"get_booking", "user_info", "get_operations"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="operations")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"post_booking", "put_booking"})
+     * @Groups({"post_booking", "put_booking", "get_operations"})
      */
     private $user;
 
@@ -52,27 +53,34 @@ class Operation
 
     /**
      * @ORM\Column(type="float")
-     * @Groups({"post_booking", "get_booking", "put_booking", "user_info"})
+     * @Groups({"post_booking", "get_booking", "put_booking", "user_info", "get_operations"})
      */
     private $amount;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_booking", "put_booking", "user_info"})
+     * @Groups({"post_booking", "put_booking", "user_info", "get_operations"})
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"post_booking", "put_booking", "user_info"})
+     * @Groups({"post_booking", "put_booking", "user_info", "get_operations"})
      */
     private $reason;
 
     /**
      * @ORM\Column(name="created_at", type="datetime")
-     * @Groups({"user_info"})
+     * @Groups({"user_info", "get_operations"})
      */
     private $createdAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\PaymentMeans", inversedBy="operations")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"post_booking", "put_booking", "get_booking", "user_info", "get_operations"})
+     */
+    private $paymentMeans;
 
 
     public function __construct()
@@ -86,7 +94,10 @@ class Operation
      */
     public function addOperation()
     {
-        $this->getUser()->setBalance($this->getUser()->getBalance()+$this->getAmount());
+        if ($this->getPaymentMeans()->getId() == 1) {
+            $this->getUser()->setBalance($this->getUser()->getBalance()+$this->getAmount());
+        }
+
     }
 
 
@@ -95,7 +106,9 @@ class Operation
      */
     public function removeOperation()
     {
-        $this->getUser()->setBalance($this->getUser()->getBalance()-$this->getAmount());
+        if ($this->getPaymentMeans()->getId() == 1) {
+            $this->getUser()->setBalance($this->getUser()->getBalance() - $this->getAmount());
+        }
     }
 
 
@@ -179,6 +192,18 @@ class Operation
     public function setCreatedAt($createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getPaymentMeans(): ?PaymentMeans
+    {
+        return $this->paymentMeans;
+    }
+
+    public function setPaymentMeans(?PaymentMeans $paymentMeans): self
+    {
+        $this->paymentMeans = $paymentMeans;
+
+        return $this;
     }
 
 
