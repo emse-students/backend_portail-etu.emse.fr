@@ -35,13 +35,13 @@ class PaymentMeans
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means", "user_info", "get_operations"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means"})
+     * @Groups({"event_get", "get_booking", "get_event_bookings", "events_get", "payment_means", "user_info", "get_operations"})
      */
     private $name;
 
