@@ -94,7 +94,7 @@ class Operation
      */
     public function addOperation()
     {
-        if ($this->getPaymentMeans()->getId() == 1) {
+        if ($this->getPaymentMeans()->getId() == 1 or $this->getType() == 'recharge') {
             $this->getUser()->setBalance($this->getUser()->getBalance()+$this->getAmount());
         }
 
