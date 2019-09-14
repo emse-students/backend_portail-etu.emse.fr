@@ -53,23 +53,26 @@ final class PutBookingSubscriber implements EventSubscriberInterface
         if (isset($data['operation']) and !array_key_exists('id',$data['operation'])) {
 //            $this->logger->info('OldBookingId = '.$oldBooking->getId());
 //            $this->logger->info('OldBookingOperation = '.$oldBooking->getOperation()->getId());
-//            $this->logger->info('OldBookingOperation = '.$oldBooking->getOperation()->getAmount());
-            $oldOperation = $oldBooking->getOperation();
-            $em = $this->doctrine->getManager();
-            if (!is_null($oldOperation)) {
+            $matches = [];
+            preg_match('/([0-9]+)/', $data['operation']['paymentMeans'], $matches);
+            if ($matches[0] == '1') {
+                $oldOperation = $oldBooking->getOperation();
+                $em = $this->doctrine->getManager();
+                if (!is_null($oldOperation)) {
 //                $this->logger->info('OldOperationId = '.$oldOperation->getId());
 //            $em->flush();
-                $oldOperation->getUser()->setBalance($oldOperation->getUser()->getBalance()+$data['operation']['amount']);
-                $em->flush();
-            } else {
-                //$data['operation']['user'] = 'http://portail-test-api.emse.fr/index.php/api/users/1';
-                $array = explode('/', $data['operation']['user']);
+                    $oldOperation->getUser()->setBalance($oldOperation->getUser()->getBalance()+$data['operation']['amount']);
+                    $em->flush();
+                } else {
+                    //$data['operation']['user'] = 'http://portail-test-api.emse.fr/index.php/api/users/1';
+                    $array = explode('/', $data['operation']['user']);
 //                $this->logger->info('array[2] : '.$array[2]);
-                $userId = end($array);
+                    $userId = end($array);
 //                $this->logger->info('userId : '.$userId);
-                $user = $this->userRepository->find($userId);
-                $user->setBalance($user->getBalance()+$data['operation']['amount']);
-                $em->flush();
+                    $user = $this->userRepository->find($userId);
+                    $user->setBalance($user->getBalance()+$data['operation']['amount']);
+                    $em->flush();
+                }
             }
         } elseif (array_key_exists('operation',$data) and is_null($data['operation'])) {
 //            $this->logger->info('data operation= '.$data['operation']);
