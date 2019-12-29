@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Filters\OperationAllFilter;
+use App\Filters\OperationPaymentMeansFilter;
 
 
 
@@ -27,6 +32,10 @@ use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
  *     normalizationContext={"groups"={"get_operations"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\OperationRepository")
+ * @ApiFilter(SearchFilter::class, properties={"reason": "exact"})
+ * @ApiFilter(OrderFilter::class, properties={"createdAt"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OperationAllFilter::class)
+ * @ApiFilter(OperationPaymentMeansFilter::class)
  * @HasLifecycleCallbacks
  */
 class Operation

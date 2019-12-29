@@ -67,13 +67,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user", "get_operations"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "get_event_bookings", "user_info", "event_get", "put_user", "get_operations"})
      */
     private $lastname;
 
@@ -96,13 +96,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups({"get_user", "get_full_asso", "user_light", "user_info", "get_event_bookings", "put_user"})
+     * @Groups({"get_user", "get_full_asso", "user_light", "user_info", "get_event_bookings", "put_user", "get_operations"})
      */
     private $promo;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"get_user", "user_info", "get_full_asso", "user_light", "put_user"})
+     * @Groups({"get_user", "user_info", "get_full_asso", "user_light", "put_user", "get_operations"})
      */
     private $type;
 
