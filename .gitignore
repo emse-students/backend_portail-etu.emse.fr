@@ -13,3 +13,6 @@
 /config/jwt/*.pem
 /config/jwt/*.pem-back
 ###< lexik/jwt-authentication-bundle ###
+
+### sql dump storage
+sql/
