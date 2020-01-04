@@ -99,7 +99,7 @@ class Booking
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups({"get_booking", "post_booking", "put_booking", "get_event_bookings"})
      */
-    private $checked;
+    private $checked = false;
 
     /**
      * @ORM\Column(type="integer", nullable=true)

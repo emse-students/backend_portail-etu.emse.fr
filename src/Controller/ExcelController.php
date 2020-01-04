@@ -55,6 +55,10 @@ class ExcelController extends AbstractController
             array_push($cols, ['type' => 'paid', 'index' => $colIndex]);
             $sheet->setCellValue($this->colName($colIndex).'1', 'Payé ?');
             $colIndex ++;
+
+            array_push($cols, ['type' => 'paymentMeans', 'index' => $colIndex]);
+            $sheet->setCellValue($this->colName($colIndex).'1', 'Moyen de paiement');
+            $colIndex ++;
         }
 
         foreach ($event->getFormInputs() as $formInput) {
@@ -95,6 +99,9 @@ class ExcelController extends AbstractController
 
                 } elseif ($col['type'] === 'paid') {
                     $sheet->setCellValue($this->colName($col['index']).$index, $booking->getPaid());
+
+                } elseif ($col['type'] === 'paymentMeans' and $booking->getPaymentMeans()) {
+                    $sheet->setCellValue($this->colName($col['index']).$index, $booking->getPaymentMeans()->getName());
 
                 } elseif ($col['type'] === 'text') {
                     foreach ($formOutputs as $formOutput) {
