@@ -7,7 +7,7 @@ echo "Apply migrations";
 php bin/console doctrine:migrations:migrate -n
 
 echo "Clear production cache";
-php bin/console cache:clear -e prod
+php bin/console cache:warmup
 
 echo "Remove global README.md";
 rm ./README.md
