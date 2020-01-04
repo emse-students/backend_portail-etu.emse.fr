@@ -128,6 +128,12 @@ class Association
      */
     private $isList;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default" : true})
+     * @Groups({"light", "get_full_asso"})
+     */
+    private $isActive;
+
     public function __construct()
     {
         $this->createdAt = new DateTime();
@@ -362,6 +368,18 @@ class Association
     public function setContrastColor2(?string $contrastColor2): self
     {
         $this->contrastColor2 = $contrastColor2;
+
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
