@@ -30,6 +30,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *          },
  *     }
  * )
+ * @ORM\Table(
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="booking_unique",
+ *            columns={"user_id", "event_id"})
+ *    }
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
  */
 class Booking
