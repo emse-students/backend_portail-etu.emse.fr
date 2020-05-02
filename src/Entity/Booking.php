@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "post"={
  *              "normalization_context"={"groups"={"get_event_bookings"}},
  *              "denormalization_context"={"groups"={"post_booking"}},
+ *              "access_control"="object.getEvent().getOpen() or (object.getUser() == user and object.getUser().getContributeBDE())"
  *          }
  *     },
  *     itemOperations={
