@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         "post"={
  *              "normalization_context"={"groups"={"get_event_bookings"}},
  *              "denormalization_context"={"groups"={"post_booking"}},
+ *              "access_control"="object.getEvent().getOpen() or (object.getUser() == user and object.getUser().getContributeBDE())"
  *          }
  *     },
  *     itemOperations={
@@ -28,6 +29,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *              "access_control"="(is_granted('ROLE_USER') and object.getUser() == user) or is_granted('ROLE_R0_A1') or ('ROLE_R3_A'~object.getEvent().getAssociation().getId() in roles)"
  *          },
  *     }
+ * )
+ * @ORM\Table(
+ *    uniqueConstraints={
+ *        @ORM\UniqueConstraint(name="booking_unique",
+ *            columns={"user_id", "event_id"})
+ *    }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\BookingRepository")
  */
