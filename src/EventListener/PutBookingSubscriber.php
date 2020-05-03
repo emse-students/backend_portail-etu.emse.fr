@@ -62,6 +62,7 @@ final class PutBookingSubscriber implements EventSubscriberInterface
 //                $this->logger->info('OldOperationId = '.$oldOperation->getId());
 //            $em->flush();
                     $oldOperation->getUser()->setBalance($oldOperation->getUser()->getBalance()+$data['operation']['amount']);
+                    $em->remove($oldOperation);
                     $em->flush();
                 } else {
                     //$data['operation']['user'] = 'http://portail-test-api.emse.fr/index.php/api/users/1';
