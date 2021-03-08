@@ -151,6 +151,12 @@ class Event
     private $open;
 
     /**
+     * @ORM\Column(name="public_event", type="boolean")
+     * @Groups({"event_post", "event_get", "get_booking", "events_get", "get_full_asso"})
+     */
+    private $publicEvent;
+
+    /**
      * @ORM\Column(name="created_at", type="datetime")
      */
     private $createdAt;
@@ -486,6 +492,18 @@ class Event
     public function setOpen(bool $open): self
     {
         $this->open = $open;
+
+        return $this;
+    }
+
+    public function getPublicEvent(): ?bool
+    {
+        return $this->publicEvent;
+    }
+
+    public function setPublicEvent(bool $publicEvent): self
+    {
+        $this->publicEvent = $publicEvent;
 
         return $this;
     }
