@@ -3,17 +3,13 @@
 namespace App\EventListener;
 
 use ApiPlatform\Core\EventListener\EventPriorities;
-use App\Entity\Booking;
 use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -25,7 +21,7 @@ final class PostBookingSubscriber implements EventSubscriberInterface
     private $repository;
     private $userRepository;
 
-    public function __construct(RegistryInterface $doctrine, LoggerInterface $logger, BookingRepository $repository, UserRepository $userRepository)
+    public function __construct(ManagerRegistry $doctrine, LoggerInterface $logger, BookingRepository $repository, UserRepository $userRepository)
     {
         $this->doctrine = $doctrine;
         $this->logger = $logger;
@@ -40,7 +36,7 @@ final class PostBookingSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function postBooking(GetResponseForControllerResultEvent $event)
+    public function postBooking(ViewEvent $event)
     {
 
         $request = $event->getRequest();

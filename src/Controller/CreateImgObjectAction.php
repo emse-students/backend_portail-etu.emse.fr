@@ -7,7 +7,7 @@ use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
 use App\Entity\ImgObject;
 use App\Form\ImgObjectType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ final class CreateImgObjectAction
     private $doctrine;
     private $factory;
 
-    public function __construct(RegistryInterface $doctrine, FormFactoryInterface $factory, ValidatorInterface $validator)
+    public function __construct(ManagerRegistry $doctrine, FormFactoryInterface $factory, ValidatorInterface $validator)
     {
         $this->validator = $validator;
         $this->doctrine = $doctrine;

@@ -6,8 +6,8 @@ namespace App\Filters;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 
 final class GetEventsStatusFilter extends AbstractContextAwareFilter
 {
