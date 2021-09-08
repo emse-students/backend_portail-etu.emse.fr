@@ -7,7 +7,7 @@ use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -20,7 +20,7 @@ final class DeleteBookingSubscriber implements EventSubscriberInterface
     private $repository;
     private $userRepository;
 
-    public function __construct(RegistryInterface $doctrine, LoggerInterface $logger, BookingRepository $repository, UserRepository $userRepository)
+    public function __construct(ManagerRegistry $doctrine, LoggerInterface $logger, BookingRepository $repository, UserRepository $userRepository)
     {
         $this->doctrine = $doctrine;
         $this->logger = $logger;

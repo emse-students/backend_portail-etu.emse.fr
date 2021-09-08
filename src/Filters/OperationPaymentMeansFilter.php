@@ -14,12 +14,7 @@ final class OperationPaymentMeansFilter extends AbstractContextAwareFilter
     /**
      * UserAllFilter constructor.
      */
-    public function __construct(LoggerInterface $logger, ManagerRegistry $managerRegistery)
-    {
-        parent::__construct($managerRegistery);
-        $this->logger = $logger;
-    }
-
+   
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
 
