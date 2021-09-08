@@ -1,4 +1,7 @@
 {
+    "symfony/debug": {
+        "version": "v4.4.27"
+    },
     "symfony/form": {
         "version": "v5.3.7"
     },

@@ -5,11 +5,11 @@ namespace App\EventListener;
 use ApiPlatform\Core\EventListener\EventPriorities;
 use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use GuzzleHttp\Client;
 use Psr\Log\LoggerInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 
@@ -35,7 +35,7 @@ final class DeleteBookingSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function deleteBooking(GetResponseEvent $event)
+    public function deleteBooking(RequestEvent $event)
     {
 
         $request = $event->getRequest();
